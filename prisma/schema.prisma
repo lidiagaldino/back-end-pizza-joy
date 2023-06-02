@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model cliente {
+  id               Int                @id @default(autoincrement())
+  nome             String             @db.VarChar(50)
+  telefone         String             @db.VarChar(20)
+  email            String             @db.VarChar(256)
+  senha            String
+  cliente_endereco cliente_endereco[]
+  pedido           pedido[]
+
+  @@map("tbl_cliente")
+}
+
+model endereco {
+  id               Int                @id @default(autoincrement())
+  cep              String             @db.VarChar(25)
+  logradouro       String             @db.VarChar(50)
+  complemento      String             @db.VarChar(100)
+  bairro           String             @db.VarChar(50)
+  localidade       String             @db.VarChar(100)
+  uf               String             @db.VarChar(10)
+  cliente_endereco cliente_endereco[]
+
+  @@map("tbl_endereco")
+}
+
+model cliente_endereco {
+  id          Int      @id @default(autoincrement())
+  id_cliente  Int
+  cliente     cliente  @relation(fields: [id_cliente], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id_endereco Int
+  endereco    endereco @relation(fields: [id_endereco], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("tbl_cliente_endereco")
+}
+
+model pedido {
+  id            Int            @id @default(autoincrement())
+  data_hora     DateTime
+  status_pedido String         @db.VarChar(40)
+  id_cliente    Int
+  cliente       cliente        @relation(fields: [id_cliente], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pedido_pizza  pedido_pizza[]
+
+  @@map("tbl_pedido")
+}
+
+model pizza {
+  id                Int                 @id @default(autoincrement())
+  nome              String              @db.VarChar(50)
+  preco             Float
+  descricao         String              @db.Text
+  tamanho           String              @db.VarChar(50)
+  pedido_pizza      pedido_pizza[]
+  pizza_ingrediente pizza_ingrediente[]
+
+  @@map("tbl_pizza")
+}
+
+model pedido_pizza {
+  id                Int    @id @default(autoincrement())
+  quantidade_pizzas Float
+  id_pedido         Int
+  pedido            pedido @relation(fields: [id_pedido], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id_pizza          Int
+  pizza             pizza  @relation(fields: [id_pizza], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("tbl_pedido_pizza")
+}
+
+model pizza_ingrediente {
+  id             Int         @id @default(autoincrement())
+  id_pizza       Int
+  pizza          pizza       @relation(fields: [id_pizza], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id_ingrediente Int
+  ingrediente    ingrediente @relation(fields: [id_ingrediente], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("tbl_pizza_ingrediente")
+}
+
+model ingrediente {
+  id                Int                 @id @default(autoincrement())
+  nome_ingrediente  String              @db.VarChar(50)
+  preco_ingrediente Float
+  pizza_ingrediente pizza_ingrediente[]
+
+  @@map("tbl_ingrediente")
+}
