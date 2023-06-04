@@ -61,6 +61,7 @@ model pizza {
   tamanho           String              @db.VarChar(50)
   pedido_pizza      pedido_pizza[]
   pizza_ingrediente pizza_ingrediente[]
+  usuario_adm_pizza_ingrediente usuario_adm_pizza_ingrediente[]
 
   @@map("tbl_pizza")
 }
@@ -93,4 +94,23 @@ model ingrediente {
   pizza_ingrediente pizza_ingrediente[]
 
   @@map("tbl_ingrediente")
+}
+
+model usuario_adm_pizza_ingrediente{
+  id                Int                 @id @default(autoincrement())
+  id_usuario_adm Int
+  usuario_adm usuario_adm @relation(fields: [id_usuario_adm], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id_pizza Int
+  pizza pizza @relation(fields: [id_pizza], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("tbl_usuario_adm_pizza")
+}
+
+model usuario_adm{
+  id                Int                 @id @default(autoincrement())
+  email            String @unique            @db.VarChar(256)
+  senha String @unique
+  usuario_adm_pizza_ingrediente usuario_adm_pizza_ingrediente[]
+
+  @@map("tbl_usuario_adm")
 }
