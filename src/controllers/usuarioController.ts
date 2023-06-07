@@ -24,8 +24,12 @@ export class UsuarioAdm {
   }
   async handleGetAll(request: Request, response: Response) {
     try {
-      const usuarios = await prismaClient.usuario_adm.findMany({});
-
+      const usuarios = await prismaClient.usuario_adm.findMany({
+        select: {
+          id: true,
+          email: true
+        }
+      });
       if (usuarios) {
         return response.json(usuarios);
       }
@@ -48,6 +52,35 @@ export class UsuarioAdm {
 
         return response.json();
       }
+    } catch {
+      return response.status(400);
+    }
+  }
+  async handleUpdateById(request: Request, response: Response) {
+    try {
+      const { id } = request.params;
+
+      const {email} = request.body
+
+      if (email !== null || email !== undefined || email !== "" && id !== null || id!== undefined || id !== "") {
+        const usuario = await prismaClient.usuario_adm.update({
+          where: {
+            id: Number(id)
+          },
+          data:{
+            email
+          },
+          select: {
+            id: true,
+            email: true
+          }
+        });
+
+        if (usuario) {
+          return response.json(usuario);
+        }
+      }
+      
     } catch {
       return response.status(400);
     }

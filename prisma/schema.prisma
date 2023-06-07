@@ -58,9 +58,9 @@ model pizza {
   nome              String              @db.VarChar(50)
   preco             Float
   descricao         String              @db.Text
-  tamanho           String              @db.VarChar(50)
   pedido_pizza      pedido_pizza[]
-  pizza_ingrediente pizza_ingrediente[]
+  ingrediente pizza_ingrediente[]
+  pizza_tamanho pizza_tamanho[]
   usuario_adm_pizza_ingrediente usuario_adm_pizza_ingrediente[]
 
   @@map("tbl_pizza")
@@ -89,11 +89,30 @@ model pizza_ingrediente {
 
 model ingrediente {
   id                Int                 @id @default(autoincrement())
-  nome_ingrediente  String              @db.VarChar(50)
+  nome_ingrediente  String              @db.VarChar(50) @unique
   preco_ingrediente Float
   pizza_ingrediente pizza_ingrediente[]
 
   @@map("tbl_ingrediente")
+}
+
+model pizza_tamanho{
+  id             Int         @id @default(autoincrement())
+  id_pizza       Int
+  pizza          pizza       @relation(fields: [id_pizza], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id_tamanho Int
+  tamanho    tamanho @relation(fields: [id_tamanho], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("tbl_pizza_tamanho")
+}
+
+model tamanho{
+  id                Int                 @id @default(autoincrement())
+  nome_tamanho String @db.VarChar(50) @unique
+  preco_tamanho Float
+  pizza_tamanho pizza_tamanho[]
+
+  @@map("tbl_tamanho")
 }
 
 model usuario_adm_pizza_ingrediente{
