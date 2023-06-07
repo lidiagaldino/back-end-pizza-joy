@@ -27,8 +27,8 @@ export class UsuarioAdm {
       const usuarios = await prismaClient.usuario_adm.findMany({
         select: {
           id: true,
-          email: true
-        }
+          email: true,
+        },
       });
       if (usuarios) {
         return response.json(usuarios);
@@ -60,27 +60,32 @@ export class UsuarioAdm {
     try {
       const { id } = request.params;
 
-      const {email} = request.body
+      const { email } = request.body;
 
-      if (email !== null || email !== undefined || email !== "" && id !== null || id!== undefined || id !== "") {
+      if (
+        email !== null ||
+        email !== undefined ||
+        (email !== "" && id !== null) ||
+        id !== undefined ||
+        id !== ""
+      ) {
         const usuario = await prismaClient.usuario_adm.update({
           where: {
-            id: Number(id)
+            id: Number(id),
           },
-          data:{
-            email
+          data: {
+            email,
           },
           select: {
             id: true,
-            email: true
-          }
+            email: true,
+          },
         });
 
         if (usuario) {
           return response.json(usuario);
         }
       }
-      
     } catch {
       return response.status(400);
     }

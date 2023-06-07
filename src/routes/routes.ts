@@ -16,5 +16,6 @@ router.get("/usuario/:id/adm", usuarioRequisitions.handleGetById);
 
 router.post("/pizza", pizzaRequisitions.handlePostPizza);
 router.get("/pizzas", pizzaRequisitions.handleGetAllPizzas);
+router.delete("/pizza/:id", pizzaRequisitions.handleDeletePizzaById);
 
 export { router };

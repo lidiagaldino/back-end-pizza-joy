@@ -98,10 +98,26 @@ export class PizzaRequisitions {
           },
         },
       });
-
       if (pizzas) {
         return response.json(pizzas);
       }
+    } catch (error) {
+      return response.json(error);
+    }
+  }
+  async handleDeletePizzaById(request: Request, response: Response) {
+    try {
+      const { id } = request.params;
+
+      var status = 0;
+
+      const deletedPizza = await prismaClient.pizza.deleteMany({
+        where: {
+          id: Number(id),
+        },
+      });
+
+      return response.json(deletedPizza).status(status);
     } catch (error) {
       return response.json(error);
     }
