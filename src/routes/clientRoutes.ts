@@ -15,3 +15,5 @@ routes.get('/', auth, ClientController.show)
 routes.put('/', auth, validation({ body: clientBodyValidation }), ClientController.update)
 
 routes.post('/login', validation({ body: loginBodyValidation }), LoginController.client)
+
+export default routes
