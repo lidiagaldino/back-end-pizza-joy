@@ -10,7 +10,7 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
     if (!authorization) {
         return res
             .status(StatusCodes.UNAUTHORIZED)
-            .json({ message: "Não autotizado" });
+            .json({ error: "UNAUTHORIZED" });
     }
 
     const [, token] = authorization.split(" ");
@@ -25,6 +25,6 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
     } catch (error) {
         return res
             .status(StatusCodes.UNAUTHORIZED)
-            .json({ message: "Não autorizado" });
+            .json({ error: "UNAUTHORIZED" });
     }
 };

@@ -11,7 +11,7 @@ class Client {
                 data: {
                     email: client.email,
                     nome: client.nome,
-                    senha: client.senha,
+                    senha: bcrypt.hashSync(client.senha, 8),
                     telefone: client.telefone,
                     cliente_endereco: {
                         create: {
@@ -41,7 +41,7 @@ class Client {
                 id: result.id,
                 email: result.email,
                 nome: result.nome,
-                senha: result.senha,
+                senha: "",
                 telefone: result.telefone,
                 endereco: result.cliente_endereco[0].endereco
             }
@@ -69,7 +69,7 @@ class Client {
                 id: client.id,
                 email: client.email,
                 nome: client.nome,
-                senha: bcrypt.hashSync(client.senha, 8),
+                senha: "",
                 telefone: client.telefone,
                 endereco: client.cliente_endereco[0].endereco
             }
@@ -90,10 +90,13 @@ class Client {
                 data: {
                     email: client.email,
                     nome: client.nome,
-                    senha: client.senha,
+                    senha: bcrypt.hashSync(client.senha, 8),
                     telefone: client.telefone
                 },
             })
+
+
+            result.senha = ""
 
             return result
         } catch (error) {

@@ -10,7 +10,7 @@ import { loginBodyValidation } from '../schemas/loginSchema'
 
 const routes = Router()
 
-routes.post('/', validation({ body: clientRegisterBodyValidation }), verifyIfExists, ClientController.store)
+routes.post('/', validation({ body: clientRegisterBodyValidation }), verifyIfExists('CLIENT'), ClientController.store)
 routes.get('/', auth, ClientController.show)
 routes.put('/', auth, validation({ body: clientBodyValidation }), ClientController.update)
 

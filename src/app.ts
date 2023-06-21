@@ -2,6 +2,7 @@ import express from "express";
 import cors, { CorsOptions } from "cors";
 import http from "http";
 import clientRoutes from './routes/clientRoutes'
+import adminRoutes from './routes/adminRoutes'
 
 class App {
     public app: express.Application;
@@ -33,6 +34,7 @@ class App {
 
     private routes() {
         this.app.use('/client', clientRoutes)
+        this.app.use('/admin', adminRoutes)
     }
 }
 
