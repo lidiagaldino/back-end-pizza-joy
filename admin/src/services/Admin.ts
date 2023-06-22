@@ -5,14 +5,14 @@ import bcrypt from 'bcryptjs'
 class Admin {
     async newAdmin(data: Omit<IAdmin, "id">): Promise<IAdmin | false> {
         try {
-            const result = await prisma.usuario_adm.create({
+            const result = await prisma.admin.create({
                 data: {
                     email: data.email,
-                    senha: bcrypt.hashSync(data.password, 8)
+                    password: bcrypt.hashSync(data.password, 8)
                 }
             })
 
-            result.senha = ""
+            result.password = ""
 
             return result
         } catch (error) {
@@ -21,17 +21,17 @@ class Admin {
     }
 
     async getById(id: number): Promise<IAdmin | false> {
-        const admin = await prisma.usuario_adm.findUnique({
+        const admin = await prisma.admin.findUnique({
             where: { id }
         })
 
-        admin.senha = ""
+        admin.password = ""
 
         return admin ? admin : false
     }
 
     async getByEmail(email: string): Promise<IAdmin | false> {
-        const admin = await prisma.usuario_adm.findUnique({
+        const admin = await prisma.admin.findUnique({
             where: { email }
         })
 
@@ -41,15 +41,15 @@ class Admin {
     async update(data: Omit<IAdmin, "id">, id: number): Promise<IAdmin | false> {
 
         try {
-            const result = await prisma.usuario_adm.update({
+            const result = await prisma.admin.update({
                 where: { id },
                 data: {
                     email: data.email,
-                    senha: bcrypt.hashSync(data.password, 8)
+                    password: bcrypt.hashSync(data.password, 8)
                 }
             })
 
-            result.senha = ""
+            result.password = ""
 
             return result
         } catch (error) {

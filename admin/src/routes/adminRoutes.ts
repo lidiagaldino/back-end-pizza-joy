@@ -9,7 +9,7 @@ import { loginBodyValidation } from '../schemas/loginSchema'
 
 const routes = Router()
 
-routes.post('/', validation({ body: adminBodyValidation }), verifyIfExists('ADMIN'), AdminController.store)
+routes.post('/', validation({ body: adminBodyValidation }), verifyIfExists, AdminController.store)
 routes.get('/', auth, AdminController.show)
 routes.put('/', auth, validation({ body: adminBodyValidation }), AdminController.update)
 

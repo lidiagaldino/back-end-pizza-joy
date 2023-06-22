@@ -7,5 +7,5 @@ export const loginBodyValidation: yup.SchemaOf<IBodyProps> = yup
     .object()
     .shape({
         email: yup.string().email().required(),
-        senha: yup.string().min(5).required(),
+        password: yup.string().min(5).required(),
     });

@@ -1,4 +1,4 @@
 export default interface ILogin {
     email: string,
-    senha: string
+    password: string
 }
