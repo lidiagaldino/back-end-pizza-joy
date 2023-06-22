@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import { auth } from '../middleware/auth'
 import PizzaController from '../controllers/PizzaController'
 
 const routes = Router()
 
+routes.get('/', PizzaController.index)
+routes.get('/:id', PizzaController.show)
 
 export default routes

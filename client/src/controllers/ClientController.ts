@@ -9,21 +9,21 @@ class ClientController {
 
         const result = await Client.newClient(client)
 
-        return result ? res.status(StatusCodes.CREATED).json(result) : res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        return result ? res.status(StatusCodes.CREATED).json(result) : res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({})
     }
     async show(req: Request, res: Response) {
         const { user } = req
 
         const result = await Client.getById(user.id)
 
-        return result ? res.status(StatusCodes.OK).json(result) : res.status(StatusCodes.NOT_FOUND)
+        return result ? res.status(StatusCodes.OK).json(result) : res.status(StatusCodes.NOT_FOUND).json({})
     }
     async update(req: Request<{}, {}, Omit<IClient, "id" | "endereco">>, res: Response) {
         const client = req.body
 
         const result = await Client.updade(client, req.user.id)
 
-        return result ? res.status(StatusCodes.OK).json(result) : res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        return result ? res.status(StatusCodes.OK).json(result) : res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({})
     }
 }
 

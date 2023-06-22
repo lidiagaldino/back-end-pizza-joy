@@ -15,7 +15,7 @@ class LoginController {
             return res.status(StatusCodes.NOT_FOUND).json({ message: "Not found" });
         }
 
-        const isPassValid = await bcrypt.compare(data.senha, client.password);
+        const isPassValid = await bcrypt.compare(data.password, client.password);
 
         if (!isPassValid) {
             return res
