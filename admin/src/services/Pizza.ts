@@ -1,4 +1,5 @@
 import IPizza from "../interfaces/Pizza";
+import KafkaSendMessage from "../kafka/KafkaSendMessage";
 import prisma from "../lib/db";
 
 class Pizza {
@@ -42,8 +43,11 @@ class Pizza {
                 size: result.pizza_size.map((item) => { return { size_id: item.size_id, price: item.price, name: item.size.name } })
             }
 
+            await KafkaSendMessage.execute('pizza_created', response)
+
             return response
         } catch (error) {
+            console.log(error);
             return false
         }
     }

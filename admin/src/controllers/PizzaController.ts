@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import IPizza from "../interfaces/Pizza";
 import Pizza from "../services/Pizza";
 import { StatusCodes } from "http-status-codes";
+import KafkaSendMessage from "../kafka/KafkaSendMessage";
 
 class PizzaController {
     async store(req: Request<{}, {}, Omit<IPizza, "id">>, res: Response) {
