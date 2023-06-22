@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id             Int             @id @default(autoincrement())
+  name           String          @db.VarChar(50)
+  phone          String          @db.VarChar(20)
+  email          String          @db.VarChar(256)
+  password       String
+  client_address CLientAddress[]
+
+  @@map("tbl_client")
+}
+
+model Address {
+  id             Int             @id @default(autoincrement())
+  cep            String          @db.VarChar(25)
+  street         String          @db.VarChar(50)
+  complement     String?         @db.VarChar(100)
+  neighborhood   String          @db.VarChar(50)
+  city           String          @db.VarChar(100)
+  uf             String          @db.VarChar(10)
+  number         String          @db.VarChar(10)
+  client_address CLientAddress[]
+
+  @@map("tbl_address")
+}
+
+model CLientAddress {
+  id         Int     @id @default(autoincrement())
+  client_Id  Int
+  client     Client  @relation(fields: [client_Id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  address_id Int
+  address    Address @relation(fields: [address_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("tbl_client_address")
+}
+
+model Pizza {
+  id          Int               @id @default(autoincrement())
+  name        String            @db.VarChar(50)
+  description String            @db.Text
+  ingredient  PizzaIngredient[]
+  pizza_size  PizzaSize[]
+
+  @@map("tbl_pizza")
+}
+
+model PizzaIngredient {
+  id            Int        @id @default(autoincrement())
+  id_pizza      Int
+  pizza         Pizza      @relation(fields: [id_pizza], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  ingredient_id Int
+  ingrediente   Ingredient @relation(fields: [ingredient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("tbl_pizza_ingredient")
+}
+
+model Ingredient {
+  id                Int               @id @default(autoincrement())
+  name              String            @unique @db.VarChar(50)
+  price             Float
+  pizza_ingrediente PizzaIngredient[]
+
+  @@map("tbl_ingredient")
+}
+
+model PizzaSize {
+  id       Int   @id @default(autoincrement())
+  pizza_id Int
+  pizza    Pizza @relation(fields: [pizza_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  size_id  Int
+  size     Size  @relation(fields: [size_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  price    Float
+
+  @@map("tbl_pizza_size")
+}
+
+model Size {
+  id         Int         @id @default(autoincrement())
+  name       String      @unique @db.VarChar(50)
+  pizza_size PizzaSize[]
+
+  @@map("tbl_size")
+}
