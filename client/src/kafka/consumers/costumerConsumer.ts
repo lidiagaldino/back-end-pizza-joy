@@ -8,7 +8,7 @@ export async function createConsumer() {
 
     await consumer.run({
         eachMessage: async ({ message }) => {
-            const messageString = JSON.stringify(message.value?.toString()) as unknown as IPizza
+            const messageString = JSON.parse(message.value?.toString()) as unknown as IPizza
             console.log(messageString);
 
             const result = await prisma.pizza.create({

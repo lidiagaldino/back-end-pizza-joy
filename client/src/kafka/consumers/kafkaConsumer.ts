@@ -6,7 +6,7 @@ export const kafkaConsumer = async (topic: string) => {
     await consumer.connect()
 
 
-    await consumer.subscribe({ topic, fromBeginning: true })
+    await consumer.subscribe({ topic })
 
     return consumer
 }
