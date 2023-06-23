@@ -1,4 +1,6 @@
 import IPizza from "../interfaces/Pizza";
+import IPizzaIngredient from "../interfaces/PizzaIngredient";
+import IPizzaSize from "../interfaces/PizzaSize";
 import KafkaSendMessage from "../kafka/KafkaSendMessage";
 import prisma from "../lib/db";
 
@@ -24,7 +26,7 @@ class Pizza {
                 include: {
                     ingredient: {
                         include: {
-                            ingrediente: true
+                            ingredient: true
                         }
                     },
                     pizza_size: {
@@ -39,7 +41,7 @@ class Pizza {
                 id: result.id,
                 description: result.description,
                 name: result.name,
-                ingredient: result.ingredient.map(item => { return { ingredient_id: item.ingredient_id, name: item.ingrediente.name } }),
+                ingredient: result.ingredient.map(item => { return { ingredient_id: item.ingredient_id, name: item.ingredient.name } }),
                 size: result.pizza_size.map((item) => { return { size_id: item.size_id, price: item.price, name: item.size.name } })
             }
 
@@ -73,7 +75,7 @@ class Pizza {
             include: {
                 ingredient: {
                     select: {
-                        ingrediente: true
+                        ingredient: true
                     }
                 },
                 pizza_size: {
@@ -90,7 +92,7 @@ class Pizza {
                     id: item.id,
                     description: item.description,
                     name: item.name,
-                    ingredient: item.ingredient.map(ing => { return { ingredient_id: ing.ingrediente.id, name: ing.ingrediente.name } }),
+                    ingredient: item.ingredient.map(ing => { return { ingredient_id: ing.ingredient.id, name: ing.ingredient.name } }),
                     size: item.pizza_size.map(siz => { return { size_id: siz.size_id, name: siz.size.name, price: siz.price } })
                 }
             })
@@ -111,7 +113,7 @@ class Pizza {
             include: {
                 ingredient: {
                     select: {
-                        ingrediente: true
+                        ingredient: true
                     }
                 },
                 pizza_size: {
@@ -127,7 +129,7 @@ class Pizza {
                 id: pizza.id,
                 description: pizza.description,
                 name: pizza.name,
-                ingredient: pizza.ingredient.map(ing => { return { ingredient_id: ing.ingrediente.id, name: ing.ingrediente.name } }),
+                ingredient: pizza.ingredient.map(ing => { return { ingredient_id: ing.ingredient.id, name: ing.ingredient.name } }),
                 size: pizza.pizza_size.map(siz => { return { size_id: siz.size_id, name: siz.size.name, price: siz.price } })
             }
 
@@ -137,7 +139,7 @@ class Pizza {
         return false
     }
 
-    async addOrRemovePizzaIngredient(ingredient_id: number, id_pizza: number) {
+    async addOrRemovePizzaIngredient(ingredient_id: number, id_pizza: number): Promise<IPizzaIngredient | false> {
         const verify = await prisma.pizzaIngredient.findFirst({
             where: {
                 ingredient_id,
@@ -145,50 +147,27 @@ class Pizza {
             }
         })
 
-        let response
+        try {
+            let response
 
-        if (verify) {
-            response = await prisma.pizzaIngredient.delete({
-                where: {
-                    id: verify.id
-                }
-            })
-        } else {
-            response = await prisma.pizzaIngredient.create({
-                data: {
-                    id_pizza,
-                    ingredient_id
-                }
-            })
-        }
-
-        return response
-    }
-
-    async addOrRemovePizzaSize(size_id: number, pizza_id: number, price: number) {
-        const verify = await prisma.pizzaSize.findFirst({
-            where: {
-                size_id,
-                pizza_id
+            if (verify) {
+                response = await prisma.pizzaIngredient.delete({
+                    where: {
+                        id: verify.id
+                    }
+                })
+            } else {
+                response = await prisma.pizzaIngredient.create({
+                    data: {
+                        id_pizza,
+                        ingredient_id
+                    }
+                })
             }
-        })
 
-        let response
-
-        if (verify) {
-            response = await prisma.pizzaSize.delete({
-                where: {
-                    id: verify.id
-                }
-            })
-        } else {
-            response = await prisma.pizzaSize.create({
-                data: {
-                    pizza_id,
-                    size_id,
-                    price
-                }
-            })
+            return response
+        } catch (error) {
+            return false
         }
     }
 }
