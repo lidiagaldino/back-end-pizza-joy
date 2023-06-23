@@ -13,9 +13,9 @@ class PizzaIngredientController {
     }
 
     async delete(req: Request, res: Response) {
-        const { pizza_id, ingredient_id } = req.params
+        const { pizza_id, id_ingredient } = req.params
 
-        const result = await PizzaIngredient.delete(Number(pizza_id), Number(ingredient_id))
+        const result = await PizzaIngredient.delete(Number(pizza_id), Number(id_ingredient))
 
         return result ? res.status(StatusCodes.NO_CONTENT).json({}) : res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({})
     }
