@@ -8,5 +8,7 @@ import { pizzaBodyValidation } from "../schemas/pizzaSchema";
 const routes = Router()
 
 routes.post('/', auth, isAdmin, validation({ body: pizzaBodyValidation }), PizzaController.store)
+routes.get('/', PizzaController.index)
+routes.get('/:id', PizzaController.show)
 
 export default routes

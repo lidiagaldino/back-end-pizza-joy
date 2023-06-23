@@ -2,7 +2,6 @@ import express from "express";
 import cors, { CorsOptions } from "cors";
 import http from "http";
 import adminRoutes from './routes/adminRoutes'
-import pizzaRoutes from './routes/pizzaRoutes'
 
 class App {
     public app: express.Application;
@@ -34,7 +33,6 @@ class App {
 
     private routes() {
         this.app.use('/admin', adminRoutes)
-        this.app.use('/pizza', pizzaRoutes)
     }
 }
 
