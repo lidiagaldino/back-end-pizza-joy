@@ -41,6 +41,8 @@ class Ingredient {
             }
         })
 
+        console.log(result);
+
         return result ? result : false
     }
 

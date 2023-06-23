@@ -49,6 +49,17 @@ class PizzaIngredient {
 
         return result.length > 0 ? result : false
     }
+
+    async find(id_pizza: number, ingredient_id: number): Promise<IPizzaIngredient | false> {
+        const result = await prisma.pizzaIngredient.findFirst({
+            where: {
+                id_pizza,
+                ingredient_id
+            }
+        })
+
+        return result ? result : false
+    }
 }
 
 export default new PizzaIngredient()

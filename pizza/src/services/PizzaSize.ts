@@ -51,6 +51,17 @@ class PizzaSize {
 
         return pizza.length > 0 ? pizza : false
     }
+
+    async find(pizza_id: number, size_id: number) {
+        const result = await prisma.pizzaSize.findFirst({
+            where: {
+                pizza_id,
+                size_id
+            }
+        })
+
+        return result ? result : false
+    }
 }
 
 export default new PizzaSize()

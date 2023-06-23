@@ -8,6 +8,12 @@ class PizzaSizeController {
     async store(req: Request<{}, {}, IPizzaSize>, res: Response) {
         const pizzaSize = req.body
 
+        const verify = await PizzaSize.find(pizzaSize.pizza_id, pizzaSize.size_id)
+
+        if (verify) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ error: 'this pizza already has this size' })
+        }
+
         const result = await PizzaSize.create(pizzaSize)
 
         return result ? res.status(StatusCodes.CREATED).json(result) : res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({})
@@ -23,6 +29,12 @@ class PizzaSizeController {
 
     async delete(req: Request, res: Response) {
         const { pizza_id, size_id } = req.params
+
+        const verify = await PizzaSize.getAll(Number(pizza_id))
+
+        if (verify) {
+            if (verify.length < 2) return res.status(StatusCodes.BAD_REQUEST).json({ error: 'a pizza cannot have less than one size' })
+        }
 
         const result = await PizzaSize.delete(Number(pizza_id), Number(size_id))
 
