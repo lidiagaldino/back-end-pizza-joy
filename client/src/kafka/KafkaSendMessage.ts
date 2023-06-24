@@ -1,3 +1,4 @@
+import { pathToFileURL } from 'url';
 import kafka from '.'
 
 class KafkaSendMessage {

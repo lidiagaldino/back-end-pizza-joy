@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          Int           @id @default(autoincrement())
+  external_id Int           @unique
+  name        String
+  description String
+  ProductSize ProductSize[]
+
+  @@map("tbl_product")
+}
+
+model ProductSize {
+  id           Int            @id @default(autoincrement())
+  price        Float
+  size         Size           @relation(fields: [size_id], references: [external_id], onDelete: Cascade)
+  product      Product        @relation(fields: [product_id], references: [external_id], onDelete: Cascade)
+  size_id      Int
+  product_id   Int
+  ProductOrder ProductOrder[]
+
+  @@map("tbl_product_size")
+}
+
+model Size {
+  id          Int           @id @default(autoincrement())
+  external_id Int           @unique
+  name        String
+  ProductSize ProductSize[]
+
+  @@map("tbl_size")
+}
+
+model ProductOrder {
+  id              Int         @id @default(autoincrement())
+  product_size    ProductSize @relation(fields: [product_size_id], references: [id], onDelete: Cascade)
+  order           Order       @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  quantity        Int
+  product_size_id Int
+  order_id        Int
+
+  @@map("tbl_produdct_order")
+}
+
+model Order {
+  id                Int            @id @default(autoincrement())
+  created_at        DateTime       @default(now())
+  finished_at       DateTime?
+  intent_payment_id String         @unique
+  client            Client         @relation(fields: [client_id], references: [external_id], onDelete: Cascade)
+  ProductOrder      ProductOrder[]
+  client_id         Int
+  payment           Payment?
+
+  @@map("tbl_order")
+}
+
+model Client {
+  id          Int     @id @default(autoincrement())
+  external_id Int     @unique
+  name        String
+  phone       String
+  Order       Order[]
+
+  @@map("tbl_client")
+}
+
+model PaymentMethod {
+  id      Int       @id @default(autoincrement())
+  name    String
+  Payment Payment[]
+
+  @@map("tbl_payment_method")
+}
+
+model Payment {
+  id                Int           @id @default(autoincrement())
+  status            Boolean       @default(false)
+  created_at        DateTime      @default(now())
+  updated_at        DateTime      @updatedAt
+  order             Order         @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  payment_method    PaymentMethod @relation(fields: [payment_method_id], references: [id], onDelete: Cascade)
+  order_id          Int           @unique
+  payment_method_id Int
+
+  @@map("tbl_payment")
+}

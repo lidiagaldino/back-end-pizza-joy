@@ -1,4 +1,5 @@
 import IClient from "../interfaces/Client";
+import KafkaSendMessage from "../kafka/KafkaSendMessage";
 import prisma from "../lib/db";
 
 import bcrypt from 'bcryptjs'
@@ -46,6 +47,8 @@ class Client {
                 phone: result.phone,
                 address: result.client_address[0].address
             }
+
+            await KafkaSendMessage.execute('new-client', { external_id: response.id, name: response.name, phone: response.phone })
 
             return response
         } catch (error) {
@@ -98,6 +101,8 @@ class Client {
 
 
             result.password = ""
+
+            await KafkaSendMessage.execute('update-client', { external_id: result.id, phone: result.phone, name: result.name })
 
             return result
         } catch (error) {
