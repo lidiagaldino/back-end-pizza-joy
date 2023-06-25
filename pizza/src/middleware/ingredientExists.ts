@@ -9,7 +9,7 @@ export const ingredientExists = (where: 'params' | 'body', name: 'id' | 'id_ingr
     let verify: false | IIngredient
     let error: boolean
 
-    if (typeof id != 'number') {
+    if (typeof id == 'object') {
         await Promise.all(id.map(async (item) => {
             verify = await Ingredient.getById(Number(item.ingredient_id));
 

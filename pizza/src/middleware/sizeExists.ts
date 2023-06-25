@@ -9,7 +9,7 @@ export const sizeExists = (where: 'params' | 'body', name: 'id' | 'size_id' | 's
     let verify: false | ISize
     let error: boolean
 
-    if (typeof id != 'number') {
+    if (typeof id == 'object') {
         await Promise.all(id.map(async (item) => {
             verify = await Size.getById(Number(item.size_id));
 
