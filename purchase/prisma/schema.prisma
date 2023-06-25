@@ -10,42 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id          Int           @id @default(autoincrement())
-  external_id Int           @unique
-  name        String
-  description String
-  ProductSize ProductSize[]
-
-  @@map("tbl_product")
-}
-
-model ProductSize {
-  id           Int            @id @default(autoincrement())
-  price        Float
-  size         Size           @relation(fields: [size_id], references: [external_id], onDelete: Cascade)
-  product      Product        @relation(fields: [product_id], references: [external_id], onDelete: Cascade)
-  size_id      Int
-  product_id   Int
-  ProductOrder ProductOrder[]
-
-  @@map("tbl_product_size")
-}
-
-model Size {
-  id          Int           @id @default(autoincrement())
-  external_id Int           @unique
-  name        String
-  ProductSize ProductSize[]
-
-  @@map("tbl_size")
-}
-
 model ProductOrder {
-  id              Int         @id @default(autoincrement())
-  product_size    ProductSize @relation(fields: [product_size_id], references: [id], onDelete: Cascade)
-  order           Order       @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  id              Int   @id @default(autoincrement())
+  order           Order @relation(fields: [order_id], references: [id], onDelete: Cascade)
   quantity        Int
+  product_id      Int
   product_size_id Int
   order_id        Int
 

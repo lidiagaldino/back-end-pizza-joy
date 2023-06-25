@@ -9,7 +9,6 @@ class Size {
                 data: size
             })
 
-            await KafkaSendMessage.execute('new-size', { external_id: result.id, name: result.name })
             return result
         } catch (error) {
             return false
@@ -24,7 +23,6 @@ class Size {
                 }
             })
 
-            await KafkaSendMessage.execute('delete-size', { external_id: id })
             return true
         } catch (error) {
             return false
@@ -56,7 +54,6 @@ class Size {
                 data: size
             })
 
-            KafkaSendMessage.execute('update-size', { external_id: result.id, name: result.name })
             return result
         } catch (error) {
             return false
