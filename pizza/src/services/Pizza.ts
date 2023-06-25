@@ -54,6 +54,8 @@ class Pizza {
                 size: result.pizza_size.map((item) => { return { size_id: item.size_id, price: item.price, name: item.size.name } })
             }
 
+            await KafkaSendMessage.execute('new-pizza', { external_id: result.id, name: result.name, description: result.description, size: result.pizza_size.map((item) => { return { size_id: item.size_id, price: item.price } }) })
+
             return response
         } catch (error) {
             console.log(error);
@@ -82,6 +84,8 @@ class Pizza {
                 photo: result.photo,
                 category: { category_id: result.category_id }
             }
+
+            await KafkaSendMessage.execute('update-pizza', { external_id: result.id, name: result.name, description: result.description })
 
             return response
         } catch (error) {
@@ -160,38 +164,6 @@ class Pizza {
         }
 
         return false
-    }
-
-    async addOrRemovePizzaIngredient(ingredient_id: number, id_pizza: number): Promise<IPizzaIngredient | false> {
-        const verify = await prisma.pizzaIngredient.findFirst({
-            where: {
-                ingredient_id,
-                id_pizza
-            }
-        })
-
-        try {
-            let response
-
-            if (verify) {
-                response = await prisma.pizzaIngredient.delete({
-                    where: {
-                        id: verify.id
-                    }
-                })
-            } else {
-                response = await prisma.pizzaIngredient.create({
-                    data: {
-                        id_pizza,
-                        ingredient_id
-                    }
-                })
-            }
-
-            return response
-        } catch (error) {
-            return false
-        }
     }
 }
 

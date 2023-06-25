@@ -56,5 +56,4 @@ export async function updateClientConsumer() {
 }
 
 updateClientConsumer()
-
 createClientConsumer()
