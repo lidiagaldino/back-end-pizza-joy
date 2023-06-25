@@ -34,6 +34,14 @@ class PizzaController {
 
         return result ? res.status(StatusCodes.OK).json(result) : res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({})
     }
+
+    async delete(req: Request, res: Response) {
+        const { id } = req.params
+
+        const result = await Pizza.deletePizza(Number(id))
+
+        return result ? res.status(StatusCodes.NO_CONTENT).json({}) : res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({})
+    }
 }
 
 export default new PizzaController()

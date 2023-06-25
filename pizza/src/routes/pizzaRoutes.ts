@@ -17,6 +17,7 @@ const routes = Router()
 
 routes.post('/', auth, isAdmin, validation({ body: pizzaBodyValidation }), ingredientExists('body', 'ingredient'), sizeExists('body', 'size'), categoryExists('body', 'category_id'), PizzaController.store)
 routes.put('/:id', auth, isAdmin, validation({ body: pizzaBodyValidation }), pizzaExists('params', 'id'), categoryExists('body', 'category_id'), PizzaController.update)
+routes.delete('/:id', auth, isAdmin, pizzaExists('params', 'id'), PizzaController.delete)
 
 routes.post('/size', auth, isAdmin, validation({ body: pizzaSizeBodyValidation }), sizeExists('body', 'size_id'), pizzaExists('body', 'pizza_id'), PizzaSizeController.store)
 routes.delete('/size/:pizza_id/:size_id', auth, isAdmin, sizeExists('params', 'size_id'), pizzaExists('params', 'pizza_id'), PizzaSizeController.delete)

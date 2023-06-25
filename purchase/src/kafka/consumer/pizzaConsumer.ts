@@ -51,5 +51,22 @@ export async function updateProductConsumer() {
     })
 }
 
+export async function deleteProductConsumer() {
+    console.log('DELETE PIZZA LISTENING');
+
+    const consumer = await kafkaConsumer('delete-pizza', 'delete-pizza')
+    await consumer.run({
+        eachMessage: async ({ message }) => {
+            const messageObject = JSON.parse(message.value!.toString()) as { external_id: number }
+            const result = await prisma.product.delete({
+                where: { external_id: messageObject.external_id }
+            })
+
+            console.log(result);
+        }
+    })
+}
+
 updateProductConsumer()
 createProductConsumer()
+deleteProductConsumer()

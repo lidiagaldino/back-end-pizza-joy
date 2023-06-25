@@ -93,6 +93,22 @@ class Pizza {
         }
     }
 
+    async deletePizza(id: number): Promise<boolean> {
+        try {
+            await prisma.pizza.delete({
+                where: {
+                    id
+                }
+            })
+
+            await KafkaSendMessage.execute('delete-pizza', { external_id: id })
+
+            return true
+        } catch (error) {
+            return false
+        }
+    }
+
     async getPizzas(): Promise<IPizza[] | false> {
         const pizzas = await prisma.pizza.findMany({
             include: {
