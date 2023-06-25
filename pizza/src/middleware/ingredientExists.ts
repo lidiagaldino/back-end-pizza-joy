@@ -1,11 +1,26 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import Ingredient from "../services/Ingredient";
+import IIngredient from "../interfaces/Ingredient";
 
-export const ingredientExists = (where: 'params' | 'body', name: 'id' | 'id_ingredient' | 'ingredient_id') => async (req: Request, res: Response, next: NextFunction) => {
-    const id = req[where][name]
+export const ingredientExists = (where: 'params' | 'body', name: 'id' | 'id_ingredient' | 'ingredient_id' | 'ingredient') => async (req: Request, res: Response, next: NextFunction) => {
+    const id: number | { ingredient_id: number }[] = req[where][name]
 
-    const verify = await Ingredient.getById(Number(id))
+    let verify: false | IIngredient
+    let error: boolean
 
-    return verify ? next() : res.status(StatusCodes.BAD_REQUEST).json({ error: "ingredient does not exist" })
+    if (typeof id != 'number') {
+        await Promise.all(id.map(async (item) => {
+            verify = await Ingredient.getById(Number(item.ingredient_id));
+
+            if (!verify) {
+                error = true
+            }
+
+            return true;
+
+        }))
+    } else { verify = await Ingredient.getById(Number(id)); error = false }
+
+    return error ? res.status(StatusCodes.BAD_REQUEST).json({ error: "this ingredient does not exist" }) : next()
 }

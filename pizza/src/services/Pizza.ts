@@ -12,6 +12,7 @@ class Pizza {
                 data: {
                     description: pizza.description,
                     name: pizza.name,
+                    photo: pizza.photo,
                     ingredient: {
                         createMany: {
                             data: pizza.ingredient
@@ -20,6 +21,11 @@ class Pizza {
                     pizza_size: {
                         createMany: {
                             data
+                        }
+                    },
+                    catergory: {
+                        connect: {
+                            id: pizza.category.category_id
                         }
                     }
                 },
@@ -33,7 +39,8 @@ class Pizza {
                         include: {
                             size: true
                         }
-                    }
+                    },
+                    catergory: true
                 }
             })
 
@@ -41,6 +48,8 @@ class Pizza {
                 id: result.id,
                 description: result.description,
                 name: result.name,
+                photo: result.photo,
+                category: { category_id: result.category_id, name: result.catergory.name },
                 ingredient: result.ingredient.map(item => { return { ingredient_id: item.ingredient_id, name: item.ingredient.name } }),
                 size: result.pizza_size.map((item) => { return { size_id: item.size_id, price: item.price, name: item.size.name } })
             }
@@ -61,10 +70,20 @@ class Pizza {
                 data: {
                     description: pizza.description,
                     name: pizza.name,
+                    photo: pizza.photo,
+                    category_id: pizza.category.category_id
                 }
             })
 
-            return result
+            const response: Omit<IPizza, "ingredient" | "size"> = {
+                id: result.id,
+                description: result.description,
+                name: result.name,
+                photo: result.photo,
+                category: { category_id: result.category_id }
+            }
+
+            return response
         } catch (error) {
             return false
         }
@@ -92,6 +111,8 @@ class Pizza {
                     id: item.id,
                     description: item.description,
                     name: item.name,
+                    photo: item.photo,
+                    category: { category_id: item.category_id },
                     ingredient: item.ingredient.map(ing => { return { ingredient_id: ing.ingredient.id, name: ing.ingredient.name } }),
                     size: item.pizza_size.map(siz => { return { size_id: siz.size_id, name: siz.size.name, price: siz.price } })
                 }
@@ -129,6 +150,8 @@ class Pizza {
                 id: pizza.id,
                 description: pizza.description,
                 name: pizza.name,
+                photo: pizza.photo,
+                category: { category_id: pizza.category_id },
                 ingredient: pizza.ingredient.map(ing => { return { ingredient_id: ing.ingredient.id, name: ing.ingredient.name } }),
                 size: pizza.pizza_size.map(siz => { return { size_id: siz.size_id, name: siz.size.name, price: siz.price } })
             }

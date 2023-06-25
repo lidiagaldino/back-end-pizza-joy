@@ -8,6 +8,11 @@ export const pizzaBodyValidation: yup.SchemaOf<IBodyProps> = yup
     .shape({
         name: yup.string().required(),
         description: yup.string().required(),
+        photo: yup.string().url().required(),
+        category: yup.object({
+            category_id: yup.number().integer().positive().required(),
+            name: yup.string().notRequired()
+        }),
         ingredient: yup.array().of(yup.object({
             ingredient_id: yup.number().integer().positive().required(),
             name: yup.string().notRequired()

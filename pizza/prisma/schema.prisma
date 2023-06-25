@@ -10,12 +10,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Catergory {
+  id    Int     @id @default(autoincrement())
+  name  String
+  Pizza Pizza[]
+}
+
 model Pizza {
   id          Int               @id @default(autoincrement())
   name        String            @db.VarChar(50)
+  photo       String
   description String            @db.Text
   ingredient  PizzaIngredient[]
   pizza_size  PizzaSize[]
+  catergory   Catergory         @relation(fields: [category_id], references: [id])
+  category_id Int
 
   @@map("tbl_pizza")
 }
@@ -25,7 +34,7 @@ model PizzaIngredient {
   id_pizza      Int
   pizza         Pizza      @relation(fields: [id_pizza], references: [id], onDelete: Cascade, onUpdate: Cascade)
   ingredient_id Int
-  ingredient   Ingredient @relation(fields: [ingredient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  ingredient    Ingredient @relation(fields: [ingredient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("tbl_pizza_ingredient")
 }

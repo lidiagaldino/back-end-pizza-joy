@@ -4,6 +4,7 @@ import http from "http";
 import pizzaRoutes from './routes/pizzaRoutes'
 import sizeRoutes from './routes/sizeRoutes'
 import ingredientRoutes from './routes/ingredientRoutes'
+import categoryRoutes from './routes/categoryRoutes'
 
 class App {
     public app: express.Application;
@@ -37,6 +38,7 @@ class App {
         this.app.use('/pizza', pizzaRoutes)
         this.app.use('/size', sizeRoutes)
         this.app.use('/ingredient', ingredientRoutes)
+        this.app.use('/category', categoryRoutes)
     }
 }
 

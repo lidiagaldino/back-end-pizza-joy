@@ -35,15 +35,21 @@ class Ingredient {
     }
 
     async getById(id: number): Promise<IIngredient | false> {
-        const result = await prisma.ingredient.findUnique({
-            where: {
-                id
-            }
-        })
+        try {
+            const result = await prisma.ingredient.findUnique({
+                where: {
+                    id
+                }
+            })
 
-        console.log(result);
+            console.log('olaaaa' + result);
 
-        return result ? result : false
+            return result ? result : false
+        } catch (error) {
+            console.log(error);
+            return false
+        }
+
     }
 
     async delete(id: number): Promise<boolean> {
