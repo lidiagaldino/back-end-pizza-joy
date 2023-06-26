@@ -1,6 +1,7 @@
 import express from "express";
 import cors, { CorsOptions } from "cors";
 import http from "http";
+import stripeRoutes from './routes/stripeRoutes'
 
 class App {
     public app: express.Application;
@@ -27,10 +28,10 @@ class App {
 
     private middleware() {
         this.enableCors();
-        this.app.use(express.json());
     }
 
     private routes() {
+        this.app.use('/stripe', stripeRoutes)
     }
 }
 
