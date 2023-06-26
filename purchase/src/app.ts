@@ -2,6 +2,7 @@ import express from "express";
 import cors, { CorsOptions } from "cors";
 import http from "http";
 import stripeRoutes from './routes/stripeRoutes'
+import * as dotenv from 'dotenv'
 
 class App {
     public app: express.Application;
@@ -27,6 +28,7 @@ class App {
     }
 
     private middleware() {
+        dotenv.config()
         this.enableCors();
     }
 

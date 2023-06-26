@@ -4,5 +4,6 @@ export default interface IProduct {
     size_id: number,
     price: number,
     quantity: number,
-    image: string
+    image: string,
+    product_size_id: number
 }

@@ -8,6 +8,7 @@ export default interface IPizza {
         size_id: number,
         price: number,
         name?: string
+        pizza_size_id: number
     }[],
     category: {
         category_id: number,

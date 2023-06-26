@@ -27,6 +27,7 @@ routes.delete('/ingredient/:pizza_id/:id_ingredient', auth, isAdmin, ingredientE
 
 
 routes.get('/size/:id', PizzaSizeController.index)
+routes.get('/size', PizzaSizeController.showMany)
 routes.get('/ingredient/:id', PizzaIngredientController.index)
 routes.get('/', PizzaController.index)
 routes.get('/:id', PizzaController.show)

@@ -20,6 +20,7 @@ export const pizzaBodyValidation: yup.SchemaOf<IBodyProps> = yup
         size: yup.array().of(yup.object({
             size_id: yup.number().integer().positive().required(),
             price: yup.number().positive().required(),
-            name: yup.string().notRequired()
+            name: yup.string().notRequired(),
+            pizza_size_id: yup.number().integer().positive().notRequired()
         }))
     });

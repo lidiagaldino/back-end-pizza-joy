@@ -3,24 +3,29 @@ import IOrder from "../interfaces/Order";
 import prisma from "../lib/db";
 
 class Order {
-    async newOrder(order: Omit<IOrder, 'id'>) {
+    async newOrder(order, customer: Stripe.Response<Stripe.Customer>) {
         try {
+            const items = JSON.parse(customer.metadata.cart)
             const result = await prisma.order.create({
                 data: {
-                    client: { connect: { external_id: order.client_id } },
-                    intent_payment_id: order.intent_payment_id,
+                    client: { connect: { external_id: Number(customer.metadata.userId) } },
+                    intent_payment_id: order.payment_intent,
                     ProductOrder: {
                         createMany: {
-                            data: order.product.map(item => {
+                            data: items.map(item => {
                                 return { product_id: item.id, product_size_id: item.size_id, quantity: item.quantity }
                             })
                         }
                     },
                     payment: {
-                        create: {}
+                        create: {
+                            status: true,
+                        }
                     }
                 }
             })
+
+            console.log(result);
 
             return result
         } catch (error) {

@@ -6,5 +6,8 @@ export default interface IOrder {
     finished_at?: string,
     intent_payment_id: string,
     client_id: number,
-    product: IProduct[]
+    product_id: {
+        id: number,
+        quantity: number
+    }[]
 }

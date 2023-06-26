@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import IPizzaSize from "../interfaces/PizzaSize";
 import PizzaSize from "../services/PizzaSize";
 import { StatusCodes } from "http-status-codes";
-import Pizza from "../services/Pizza";
 
 class PizzaSizeController {
     async store(req: Request<{}, {}, IPizzaSize>, res: Response) {
@@ -39,6 +38,15 @@ class PizzaSizeController {
         const result = await PizzaSize.delete(Number(pizza_id), Number(size_id))
 
         return result ? res.status(StatusCodes.NO_CONTENT).json({}) : res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({})
+    }
+
+    async showMany(req: Request<{}, {}, {}, { pizza_size_id: number[] }>, res: Response) {
+        const { query } = req
+        console.log(JSON.parse(query.pizza_size_id.toString()));
+
+        const result = await PizzaSize.getManyPizzas(JSON.parse(query.pizza_size_id.toString()))
+
+        return result ? res.status(StatusCodes.OK).json(result) : res.status(StatusCodes.NOT_FOUND).json({ error: 'some of the requested products were not found or are repeated' })
     }
 }
 

@@ -62,6 +62,51 @@ class PizzaSize {
 
         return result ? result : false
     }
+
+    async getManyPizzas(id: number[]): Promise<{
+        id: number,
+        name: string,
+        size_id: number,
+        price: number,
+        image: string,
+        product_size_id: number
+    }[] | false> {
+        const result = await prisma.pizzaSize.findMany({
+            where: {
+                id: { in: id }
+            },
+            include: {
+                pizza: {
+                    include: {
+                        catergory: true
+                    }
+                },
+                size: true
+            }
+        })
+
+
+
+        const response: {
+            id: number,
+            name: string,
+            size_id: number,
+            price: number,
+            image: string,
+            product_size_id: number
+        }[] = result.map(item => {
+            return {
+                id: item.pizza_id,
+                name: item.pizza.name,
+                image: item.pizza.photo,
+                size_id: item.size_id,
+                price: item.price,
+                product_size_id: item.id
+            }
+        })
+
+        return result.length == id.length ? response : false
+    }
 }
 
 export default new PizzaSize()

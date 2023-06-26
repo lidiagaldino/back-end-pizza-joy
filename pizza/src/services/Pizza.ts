@@ -48,7 +48,7 @@ class Pizza {
                 photo: result.photo,
                 category: { category_id: result.category_id, name: result.catergory.name },
                 ingredient: result.ingredient.map(item => { return { ingredient_id: item.ingredient_id, name: item.ingredient.name } }),
-                size: result.pizza_size.map((item) => { return { size_id: item.size_id, price: item.price, name: item.size.name } })
+                size: result.pizza_size.map((item) => { return { size_id: item.size_id, price: item.price, name: item.size.name, pizza_size_id: item.id } })
             }
 
             return response
@@ -126,7 +126,7 @@ class Pizza {
                     photo: item.photo,
                     category: { category_id: item.category_id },
                     ingredient: item.ingredient.map(ing => { return { ingredient_id: ing.ingredient.id, name: ing.ingredient.name } }),
-                    size: item.pizza_size.map(siz => { return { size_id: siz.size_id, name: siz.size.name, price: siz.price } })
+                    size: item.pizza_size.map(siz => { return { size_id: siz.size_id, name: siz.size.name, price: siz.price, pizza_size_id: siz.id } })
                 }
             })
 
@@ -165,7 +165,7 @@ class Pizza {
                 photo: pizza.photo,
                 category: { category_id: pizza.category_id },
                 ingredient: pizza.ingredient.map(ing => { return { ingredient_id: ing.ingredient.id, name: ing.ingredient.name } }),
-                size: pizza.pizza_size.map(siz => { return { size_id: siz.size_id, name: siz.size.name, price: siz.price } })
+                size: pizza.pizza_size.map(siz => { return { size_id: siz.size_id, name: siz.size.name, price: siz.price, pizza_size_id: siz.id } })
             }
 
             return response
