@@ -10,6 +10,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model DeliveryMan {
+  id       Int     @id @default(autoincrement())
+  name     String
+  email    String
+  password String
+  Order    Order[]
+}
+
 model ProductOrder {
   id              Int   @id @default(autoincrement())
   order           Order @relation(fields: [order_id], references: [id], onDelete: Cascade)
@@ -22,14 +30,18 @@ model ProductOrder {
 }
 
 model Order {
-  id                Int            @id @default(autoincrement())
-  created_at        DateTime       @default(now())
-  finished_at       DateTime?
-  intent_payment_id String         @unique
-  client            Client         @relation(fields: [client_id], references: [external_id], onDelete: Cascade)
-  ProductOrder      ProductOrder[]
-  client_id         Int
-  payment           Payment?
+  id                 Int            @id @default(autoincrement())
+  ready_for_delivery Boolean        @default(false)
+  on_way             Boolean        @default(false)
+  created_at         DateTime       @default(now())
+  finished_at        DateTime?
+  intent_payment_id  String         @unique
+  client             Client         @relation(fields: [client_id], references: [external_id], onDelete: Cascade)
+  ProductOrder       ProductOrder[]
+  client_id          Int
+  payment            Payment?
+  deliveryman        DeliveryMan?   @relation(fields: [deliveryman_id], references: [id])
+  deliveryman_id     Int?
 
   @@map("tbl_order")
 }
