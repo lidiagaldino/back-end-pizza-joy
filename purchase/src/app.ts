@@ -3,6 +3,7 @@ import cors, { CorsOptions } from "cors";
 import http from "http";
 import stripeRoutes from './routes/stripeRoutes'
 import * as dotenv from 'dotenv'
+import orderRoutes from './routes/orderRoutes'
 
 class App {
     public app: express.Application;
@@ -34,6 +35,7 @@ class App {
 
     private routes() {
         this.app.use('/stripe', stripeRoutes)
+        this.app.use('/order', orderRoutes)
     }
 }
 

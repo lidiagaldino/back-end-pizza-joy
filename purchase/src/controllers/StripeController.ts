@@ -4,8 +4,9 @@ import IOrder from "../interfaces/Order"
 import Stripe from 'stripe'
 import Order from "../services/Order";
 import { StatusCodes } from "http-status-codes";
-import { randomUUID } from "crypto";
+
 import Product from "../services/Product";
+
 const stripe = new Stripe(
     process.env.STRIPE_API_KEY,
     {
@@ -94,6 +95,14 @@ class StripeController {
         }
 
         res.send({ recieved: true });
+    }
+
+    async getByClient(req: Request, res: Response) {
+        const { id } = req.user
+
+        const result = await Order.getByClientId(id)
+
+        return result ? res.status(StatusCodes.OK).json(result) : res.status(StatusCodes.NOT_FOUND).json({})
     }
 }
 

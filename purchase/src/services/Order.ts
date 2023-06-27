@@ -34,26 +34,14 @@ class Order {
         }
     }
 
-    async confirmPayment(payment: string, ok: boolean) {
-        try {
-            const result = await prisma.order.update({
-                where: {
-                    intent_payment_id: payment
-                },
-                data: {
-                    payment: {
-                        update: {
-                            status: ok
-                        }
-                    }
-                }
-            })
+    async getByClientId(client_id: number) {
+        const result = await prisma.order.findMany({
+            where: {
+                client_id
+            }
+        })
 
-            return result
-        } catch (error) {
-            console.log(error);
-            return false
-        }
+        return result.length > 0 ? result : false
     }
 }
 
