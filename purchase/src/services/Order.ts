@@ -43,6 +43,22 @@ class Order {
 
         return result.length > 0 ? result : false
     }
+
+    async getOrdersFilterStatus(ready_for_delivery: boolean, on_way: boolean, finished: boolean) {
+        const result = await prisma.order.findMany({
+            where: {
+                ready_for_delivery,
+                on_way,
+                finished_at: finished ? { not: null } : null
+            }
+        })
+
+        console.log(ready_for_delivery);
+
+        return result.length > 0 ? result : false
+    }
+
+
 }
 
 export default new Order()

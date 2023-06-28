@@ -6,6 +6,7 @@ import Order from "../services/Order";
 import { StatusCodes } from "http-status-codes";
 
 import Product from "../services/Product";
+import IOrderStatus from "../interfaces/OrderStatus";
 
 const stripe = new Stripe(
     process.env.STRIPE_API_KEY,
@@ -101,6 +102,14 @@ class StripeController {
         const { id } = req.user
 
         const result = await Order.getByClientId(id)
+
+        return result ? res.status(StatusCodes.OK).json(result) : res.status(StatusCodes.NOT_FOUND).json({})
+    }
+
+    async getOrderByStatus(req: Request<{}, {}, IOrderStatus>, res: Response) {
+        const { ready_for_delivery, on_way, finished } = req.query
+        console.log(ready_for_delivery);
+        const result = await Order.getOrdersFilterStatus(Boolean(ready_for_delivery == 'true'), Boolean(on_way == 'true'), Boolean(finished == 'true'))
 
         return result ? res.status(StatusCodes.OK).json(result) : res.status(StatusCodes.NOT_FOUND).json({})
     }
