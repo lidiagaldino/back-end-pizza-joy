@@ -10,6 +10,7 @@ class Order {
                 data: {
                     client: { connect: { external_id: Number(customer.metadata.userId) } },
                     intent_payment_id: order.payment_intent,
+                    order_status: { connect: { id: 1 } },
                     ProductOrder: {
                         createMany: {
                             data: items.map(item => {
@@ -21,7 +22,7 @@ class Order {
                         create: {
                             status: true,
                         }
-                    }
+                    },
                 }
             })
 
@@ -44,21 +45,32 @@ class Order {
         return result.length > 0 ? result : false
     }
 
-    async getOrdersFilterStatus(ready_for_delivery: boolean, on_way: boolean, finished: boolean) {
+    async getOrdersFilterStatus(order_status_id: number) {
         const result = await prisma.order.findMany({
             where: {
-                ready_for_delivery,
-                on_way,
-                finished_at: finished ? { not: null } : null
+                order_status_id
             }
         })
-
-        console.log(ready_for_delivery);
 
         return result.length > 0 ? result : false
     }
 
+    async updateOrderStatus(order_status_id: number, id: number) {
+        try {
+            const result = await prisma.order.update({
+                where: {
+                    id
+                },
+                data: {
+                    order_status: { connect: { id: order_status_id } }
+                }
+            })
 
+            return result
+        } catch (error) {
+            return false
+        }
+    }
 }
 
 export default new Order()

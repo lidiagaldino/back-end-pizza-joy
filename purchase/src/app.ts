@@ -35,7 +35,7 @@ class App {
 
     private routes() {
         this.app.use('/stripe', stripeRoutes)
-        this.app.use('/order', orderRoutes)
+        this.app.use('/order', express.json(), orderRoutes)
     }
 }
 

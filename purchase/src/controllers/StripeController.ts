@@ -106,12 +106,20 @@ class StripeController {
         return result ? res.status(StatusCodes.OK).json(result) : res.status(StatusCodes.NOT_FOUND).json({})
     }
 
-    async getOrderByStatus(req: Request<{}, {}, IOrderStatus>, res: Response) {
-        const { ready_for_delivery, on_way, finished } = req.query
-        console.log(ready_for_delivery);
-        const result = await Order.getOrdersFilterStatus(Boolean(ready_for_delivery == 'true'), Boolean(on_way == 'true'), Boolean(finished == 'true'))
+    async getOrderByStatus(req: Request, res: Response) {
+        const { id } = req.params
+        const result = await Order.getOrdersFilterStatus(Number(id))
 
         return result ? res.status(StatusCodes.OK).json(result) : res.status(StatusCodes.NOT_FOUND).json({})
+    }
+
+    async updateStatus(req: Request<{ id: string }, {}, IOrderStatus>, res: Response) {
+        const { id } = req.params
+        const status = req.body
+
+        const result = await Order.updateOrderStatus(status.order_id, Number(id))
+
+        return result ? res.status(StatusCodes.OK).json(result) : res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({})
     }
 }
 

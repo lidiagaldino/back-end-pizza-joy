@@ -6,7 +6,6 @@ interface IBodyProps extends IOrderStatus { }
 export const orderStatusBodyValidation: yup.SchemaOf<IBodyProps> = yup
     .object()
     .shape({
-        finished: yup.boolean(),
-        on_way: yup.boolean(),
-        ready_for_delivery: yup.boolean()
+        order_id: yup.number().integer().positive().required(),
+        status: yup.string().notRequired()
     });

@@ -29,19 +29,25 @@ model ProductOrder {
   @@map("tbl_produdct_order")
 }
 
+model OrderStatus {
+  id     Int     @id @default(autoincrement())
+  status String
+  Order  Order[]
+}
+
 model Order {
-  id                 Int            @id @default(autoincrement())
-  ready_for_delivery Boolean        @default(false)
-  on_way             Boolean        @default(false)
-  created_at         DateTime       @default(now())
-  finished_at        DateTime?
-  intent_payment_id  String         @unique
-  client             Client         @relation(fields: [client_id], references: [external_id], onDelete: Cascade)
-  ProductOrder       ProductOrder[]
-  client_id          Int
-  payment            Payment?
-  deliveryman        DeliveryMan?   @relation(fields: [deliveryman_id], references: [id])
-  deliveryman_id     Int?
+  id                Int            @id @default(autoincrement())
+  created_at        DateTime       @default(now())
+  finished_at       DateTime?
+  intent_payment_id String         @unique
+  client            Client         @relation(fields: [client_id], references: [external_id], onDelete: Cascade)
+  ProductOrder      ProductOrder[]
+  client_id         Int
+  payment           Payment?
+  deliveryman       DeliveryMan?   @relation(fields: [deliveryman_id], references: [id])
+  deliveryman_id    Int?
+  order_status      OrderStatus    @relation(fields: [order_status_id], references: [id])
+  order_status_id   Int
 
   @@map("tbl_order")
 }

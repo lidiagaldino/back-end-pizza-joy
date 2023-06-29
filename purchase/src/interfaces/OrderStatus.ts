@@ -1,5 +1,4 @@
 export default interface IOrderStatus {
-    ready_for_delivery: boolean,
-    on_way: boolean,
-    finished: boolean
+    order_id: number,
+    status?: string
 }
