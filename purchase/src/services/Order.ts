@@ -62,7 +62,8 @@ class Order {
                     id
                 },
                 data: {
-                    order_status: { connect: { id: order_status_id } }
+                    order_status: { connect: { id: order_status_id } },
+                    finished_at: order_status_id == 4 ? new Date() : null
                 }
             })
 

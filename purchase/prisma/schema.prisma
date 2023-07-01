@@ -10,14 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model DeliveryMan {
-  id       Int     @id @default(autoincrement())
-  name     String
-  email    String
-  password String
-  Order    Order[]
-}
-
 model ProductOrder {
   id              Int   @id @default(autoincrement())
   order           Order @relation(fields: [order_id], references: [id], onDelete: Cascade)
@@ -44,7 +36,6 @@ model Order {
   ProductOrder      ProductOrder[]
   client_id         Int
   payment           Payment?
-  deliveryman       DeliveryMan?   @relation(fields: [deliveryman_id], references: [id])
   deliveryman_id    Int?
   order_status      OrderStatus    @relation(fields: [order_status_id], references: [id])
   order_status_id   Int
