@@ -33,3 +33,5 @@ class Status {
         }
     }
 }
+
+export default new Status()

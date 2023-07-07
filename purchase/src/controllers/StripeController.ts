@@ -7,6 +7,7 @@ import { StatusCodes } from "http-status-codes";
 
 import Product from "../services/Product";
 import IOrderStatus from "../interfaces/OrderStatus";
+import IOrderProductRequest from "../interfaces/OrderProductRequest";
 
 const stripe = new Stripe(
     process.env.STRIPE_API_KEY,
@@ -17,7 +18,7 @@ const stripe = new Stripe(
 );
 
 class StripeController {
-    async createIntent(req: Request<{}, {}, Omit<IOrder, 'id' | 'intent_payment_id'>>, res: Response) {
+    async createIntent(req: Request<{}, {}, Omit<IOrderProductRequest, 'id'>>, res: Response) {
         const bodyOrder = req.body
         const productsData = await Product.getProductData(bodyOrder.product_id.map(item => item.id))
 
@@ -27,6 +28,7 @@ class StripeController {
         const customer = await stripe.customers.create({
             metadata: {
                 userId: req.user.id,
+                location: JSON.stringify(bodyOrder.location),
                 cart: JSON.stringify(productsData.map(item => {
                     return {
                         ...item,

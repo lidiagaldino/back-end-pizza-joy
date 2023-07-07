@@ -24,7 +24,9 @@ class Client {
                                     city: client.address.city,
                                     street: client.address.street,
                                     uf: client.address.uf,
-                                    number: client.address.number
+                                    number: client.address.number,
+                                    lat: client.address.lat,
+                                    lng: client.address.lng
                                 }
                             }
                         }

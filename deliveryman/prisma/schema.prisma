@@ -16,6 +16,8 @@ model Deliveryman {
   email    String
   password String
   isOnline Boolean @default(false)
+  lat      Float
+  lng      Float
 
   @@map("tbl_deliveryman")
 }

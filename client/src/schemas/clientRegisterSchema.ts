@@ -18,6 +18,8 @@ export const clientRegisterBodyValidation: yup.SchemaOf<IBodyProps> = yup
             city: yup.string().required(),
             uf: yup.string().required(),
             complement: yup.string().required(),
-            number: yup.string().required()
+            number: yup.string().required(),
+            lat: yup.number().required(),
+            lng: yup.number().required()
         }).required()
     });

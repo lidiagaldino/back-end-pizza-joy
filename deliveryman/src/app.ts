@@ -3,6 +3,7 @@ import cors, { CorsOptions } from "cors";
 import http from "http";
 import { Server } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import deliverymanRoutes from './routes/deliverymanRoutes'
 
 class App {
     public app: express.Application;
@@ -40,6 +41,7 @@ class App {
     }
 
     private routes() {
+        this.app.use('/deliveryman', deliverymanRoutes)
     }
 }
 

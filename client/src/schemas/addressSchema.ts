@@ -12,5 +12,7 @@ export const addressBodyValidation: yup.SchemaOf<IBodyProps> = yup
         neighborhood: yup.string().required(),
         city: yup.string().required(),
         uf: yup.string().min(2).max(2).required(),
-        number: yup.string().required()
+        number: yup.string().required(),
+        lat: yup.number().required(),
+        lng: yup.number().required()
     });

@@ -10,5 +10,6 @@ export const orderRequestBodyValidation: yup.SchemaOf<IBodyProps> = yup
             .object({
                 id: yup.number().integer().positive().required(),
                 quantity: yup.number().integer().positive().required()
-            }))
+            })),
+        location: yup.object({ lat: yup.number().required(), lng: yup.number().required(), complement: yup.string().notRequired() })
     });

@@ -27,6 +27,8 @@ model Address {
   city           String          @db.VarChar(100)
   uf             String          @db.VarChar(10)
   number         String          @db.VarChar(10)
+  lat            Float
+  lng            Float
   client_address CLientAddress[]
 
   @@map("tbl_address")

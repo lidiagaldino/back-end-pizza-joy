@@ -6,5 +6,7 @@ export default interface IAddress {
     neighborhood: string,
     city: string,
     uf: string,
-    number: string
+    number: string,
+    lat: number,
+    lng: number
 }

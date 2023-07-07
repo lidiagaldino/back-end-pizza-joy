@@ -3,6 +3,9 @@ import app from './app'
 import IPayload from './interfaces/Jwt';
 import jwt from 'jsonwebtoken'
 import normalizePort from './utils/normalizePort';
+import ILocation from './interfaces/Location';
+import Status from './services/Status';
+import Deliveryman from './services/Deliveryman';
 
 const port = normalizePort(process.env.PORT || "3000");
 
@@ -25,6 +28,8 @@ app.io.on("connection", async (socket) => {
             return null
         }
 
+        await Status.online(decoded.id)
+
         socket.join(`deliveryman_${decoded.id}`)
 
     } catch (error) {
@@ -34,6 +39,14 @@ app.io.on("connection", async (socket) => {
         socket.disconnect();
         return null;
     }
+
+    socket.on("update_deliveryman_location", async (data: ILocation) => {
+        try {
+            await Deliveryman.updateLocation(data, decoded.id)
+        } catch (error) {
+            console.log(error);
+        }
+    })
 
 })
 

@@ -39,6 +39,8 @@ model Order {
   deliveryman_id    Int?
   order_status      OrderStatus    @relation(fields: [order_status_id], references: [id])
   order_status_id   Int
+  location          Location       @relation(fields: [location_id], references: [id])
+  location_id       Int
 
   @@map("tbl_order")
 }
@@ -62,4 +64,12 @@ model Payment {
   order_id   Int      @unique
 
   @@map("tbl_payment")
+}
+
+model Location {
+  id         Int     @id @default(autoincrement())
+  lat        Float
+  lng        Float
+  complement String?
+  Order      Order[]
 }

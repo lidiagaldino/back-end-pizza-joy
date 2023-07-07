@@ -1,16 +1,19 @@
 import Stripe from "stripe";
 import IOrder from "../interfaces/Order";
 import prisma from "../lib/db";
+import KafkaSendMessage from "../kafka/KafkaSendMessage";
 
 class Order {
     async newOrder(order, customer: Stripe.Response<Stripe.Customer>) {
         try {
             const items = JSON.parse(customer.metadata.cart)
+            const location = JSON.parse(customer.metadata.location)
             const result = await prisma.order.create({
                 data: {
                     client: { connect: { external_id: Number(customer.metadata.userId) } },
                     intent_payment_id: order.payment_intent,
                     order_status: { connect: { id: 1 } },
+                    location: { create: { lat: location.lat, lng: location.lng, complement: location.complement } },
                     ProductOrder: {
                         createMany: {
                             data: items.map(item => {
@@ -25,8 +28,9 @@ class Order {
                     },
                 }
             })
-
             console.log(result);
+
+            await KafkaSendMessage.execute('new-order', result)
 
             return result
         } catch (error) {
