@@ -6,8 +6,9 @@ import normalizePort from './utils/normalizePort';
 import ILocation from './interfaces/Location';
 import Status from './services/Status';
 import Deliveryman from './services/Deliveryman';
+import './kafka/consumer'
 
-const port = normalizePort(process.env.PORT || "3000");
+const port = normalizePort(process.env.PORT || "3004");
 
 app.io.on("connection", async (socket) => {
     console.log('NEW DELIVERYMAN IS ON' + socket.id);

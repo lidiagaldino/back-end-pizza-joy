@@ -54,6 +54,14 @@ class Deliveryman {
             return false
         }
     }
+
+    async findByEmail(email: string): Promise<IDeliveryman | false> {
+        const result = await prisma.deliveryman.findFirst({
+            where: { email }
+        })
+
+        return result ? result : false
+    }
 }
 
 export default new Deliveryman()
