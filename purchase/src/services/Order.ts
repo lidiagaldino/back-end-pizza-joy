@@ -33,7 +33,7 @@ class Order {
             })
             console.log(result);
 
-            await KafkaSendMessage.execute('new-order', { id: result.id, created_at: result.created_at, finished_at: result.finished_at, client_id: result.finished_at, deliveryman_id: result.deliveryman_id, order_status_id: result.order_status_id, location: { lat: result.location.lat, lng: result.location.lng, complement: result.location.complement } })
+            await KafkaSendMessage.execute('new-order', { id: result.id, created_at: result.created_at, finished_at: result.finished_at, client_id: result.client_id, deliveryman_id: result.deliveryman_id, order_status_id: result.order_status_id, location: { lat: result.location.lat, lng: result.location.lng, complement: result.location.complement } })
 
             return result
         } catch (error) {

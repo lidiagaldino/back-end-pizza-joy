@@ -5,5 +5,6 @@ export default interface IDeliveryman {
     password: string,
     isOnline: boolean,
     lat: number,
-    lng: number
+    lng: number,
+    distance?: number
 }

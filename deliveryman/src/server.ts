@@ -7,6 +7,7 @@ import ILocation from './interfaces/Location';
 import Status from './services/Status';
 import Deliveryman from './services/Deliveryman';
 import './kafka/consumer'
+import Ride from './services/Ride';
 
 const port = normalizePort(process.env.PORT || "3004");
 
@@ -47,6 +48,12 @@ app.io.on("connection", async (socket) => {
         } catch (error) {
             console.log(error);
         }
+    })
+
+    socket.on("accept_order", async (id: number) => {
+        console.log(id);
+        const result = await Ride.acceptRide(id, decoded.id)
+        console.log(result);
     })
 
 })

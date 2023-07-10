@@ -11,5 +11,6 @@ export const deliverymanBodyValidation: yup.SchemaOf<IBodyProps> = yup
         isOnline: yup.boolean().notRequired(),
         lat: yup.number().required(),
         lng: yup.number().required(),
-        password: yup.string().min(5).required()
+        password: yup.string().min(5).required(),
+        distance: yup.number().notRequired()
     });

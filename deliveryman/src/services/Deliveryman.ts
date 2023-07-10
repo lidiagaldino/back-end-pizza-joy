@@ -40,10 +40,10 @@ class Deliveryman {
 
     async findNearestDeliveryman(location: ILocation): Promise<IDeliveryman[] | false> {
         try {
-            const sql = `SELECT id, name, lat, lng
+            const sql = `SELECT tbl_deliveryman.id, name, lat, lng, ST_DISTANCE_SPHERE(POINT(${location.lng}, ${location.lat}), POINT(lng, lat)) as distance
                 FROM tbl_deliveryman
-                    WHERE ST_DISTANCE_SPHERE(POINT(${location.lng}, ${location.lat}), POINT(lng, lat)) <= 10000 AND isOnline = true
-                ORDER BY ST_DISTANCE_SPHERE(POINT(${location.lng}, ${location.lat}), POINT(lng, lat)) LIMIT 10;`
+                    WHERE ST_DISTANCE_SPHERE(POINT(${location.lng}, ${location.lat}), POINT(lng, lat)) <= 10000 AND isOnline = true AND isBusy = false
+                ORDER BY distance LIMIT 10;`
 
             const result: IDeliveryman[] = await prisma.$queryRawUnsafe(sql)
             console.log(sql);
