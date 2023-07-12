@@ -30,7 +30,7 @@ model Queue {
   distance       Int
   deliveryman    Deliveryman @relation(fields: [deliveryman_id], references: [id])
   deliveryman_id Int
-  ride           Ride        @relation(fields: [ride_id], references: [id])
+  ride           Ride        @relation(fields: [ride_id], references: [external_id])
   ride_id        Int
 
   @@map("tbl_queue")
@@ -38,6 +38,7 @@ model Queue {
 
 model Ride {
   id             Int          @id @default(autoincrement())
+  external_id    Int          @unique
   lat            Float
   lng            Float
   client_id      Int

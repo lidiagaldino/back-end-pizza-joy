@@ -9,6 +9,7 @@ class Ride {
             console.log(ride.client_id);
             const result = await prisma.ride.create({
                 data: {
+                    external_id: ride.id,
                     lat: ride.location.lat,
                     lng: ride.location.lng,
                     client_id: ride.client_id,
@@ -59,7 +60,7 @@ class Ride {
         try {
             const result = await prisma.ride.update({
                 where: {
-                    id
+                    external_id: id
                 },
                 data: { finished_at: new Date() }
             })
@@ -71,8 +72,19 @@ class Ride {
             return result
 
         } catch (error) {
+            console.log(error);
             return false
         }
+    }
+
+    async findPendingRides(): Promise<IRide[] | false> {
+        const result = await prisma.ride.findMany({
+            where: {
+                deliveryman_id: null
+            }
+        })
+
+        return result.length > 0 ? result : false
     }
 }
 

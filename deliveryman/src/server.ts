@@ -51,9 +51,29 @@ app.io.on("connection", async (socket) => {
     })
 
     socket.on("accept_order", async (id: number) => {
-        console.log(id);
+        console.log("accept order");
         const result = await Ride.acceptRide(id, decoded.id)
         console.log(result);
+
+        //call kafka update-order-status
+    })
+
+    socket.on("deny_order", async (id: number) => {
+        console.log("deny order");
+        const result = await Ride.denyRide(id, decoded.id)
+        console.log(result);
+        await Status.free(decoded.id)
+
+        //call the next one
+    })
+
+    socket.on("finish_order", async (id: number) => {
+        console.log("finish order");
+        const result = await Ride.finishRide(id)
+        console.log(result);
+        await Status.free(decoded.id)
+
+        //call kafka update-order-status
     })
 
 })
