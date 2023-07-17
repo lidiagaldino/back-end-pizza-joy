@@ -6,6 +6,7 @@ import { makeCreateAddressController } from '../factories/address/create-address
 import { makeUpdateAddressController } from '../factories/address/update-address.controller.factory'
 import { makeFindAddressByIdController } from '../factories/address/find-address-by-id.controller.factory'
 import { makeSearchAddressByIdController } from '../factories/address/search-address-by-client.controller.factory'
+import { makeDeleteAddressController } from '../factories/address/delete-address.controller.factory'
 
 const routes = Router()
 
@@ -13,5 +14,6 @@ routes.post('/', auth, adaptRoute(makeCreateAddressController(addressBodyValidat
 routes.put('/:id', auth, adaptRoute(makeUpdateAddressController(addressBodyValidation)))
 routes.get('/', auth, adaptRoute(makeSearchAddressByIdController()))
 routes.get('/:id', adaptRoute(makeFindAddressByIdController()))
+routes.delete('/:id', auth, adaptRoute(makeDeleteAddressController()))
 
 export default routes

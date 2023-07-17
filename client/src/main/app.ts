@@ -1,8 +1,8 @@
 import express from "express";
 import cors, { CorsOptions } from "cors";
 import http from "http";
-import clientRoutes from './routes/clientRoutes'
-import addressRoutes from './routes/addressRoutes'
+import clientRoutes from './routes/client.routes'
+import addressRoutes from './routes/address.routes'
 
 class App {
     public app: express.Application;

@@ -7,12 +7,15 @@ import { makeUpdateClientController } from '../factories/client/update-client.co
 import { makeLoginClientControlelr } from '../factories/client/login-client.controller.factory'
 import { loginBodyValidation } from '../../infra/yup/schemas/loginSchema'
 import { makeGetClientByTokenId } from '../factories/client/get-client-token-id.controller.factory'
+import { makeDeleteAddressController } from '../factories/address/delete-address.controller.factory'
+import { makeDeleteClientController } from '../factories/client/delete-client.controller.factory'
 
 const routes = Router()
 
 routes.post('/', adaptRoute(makeCreateClientController(clientBodyValidation)))
 routes.get('/', auth, adaptRoute(makeGetClientByTokenId()))
 routes.put('/', auth, adaptRoute(makeUpdateClientController(clientBodyValidation)))
+routes.delete('/', auth, adaptRoute(makeDeleteClientController()))
 
 routes.post('/login', adaptRoute(makeLoginClientControlelr(loginBodyValidation)))
 

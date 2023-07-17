@@ -1,5 +1,6 @@
 import { CreateInput, CreateOutput, GetByEmailInput, GetByEmailOutput, GetByIdInput, GetByIdOutput } from "../../application/models/client.model";
 import { CreateClientRepository } from "../../application/repositories/client/create-client.repository";
+import { DeleteClientRepository } from "../../application/repositories/client/delete-client.repository";
 import { GetClientByEmailRepository } from "../../application/repositories/client/get-client-email.repository";
 import { GetClientByIdRepository } from "../../application/repositories/client/get-client-id.repository";
 import { UpdateClientRepository } from "../../application/repositories/client/update-client.repository";
@@ -11,7 +12,17 @@ export class ClientRepository implements
     CreateClientRepository,
     GetClientByEmailRepository,
     UpdateClientRepository,
-    GetClientByIdRepository {
+    GetClientByIdRepository,
+    DeleteClientRepository {
+
+    async delete(id: number): Promise<boolean> {
+        await prisma.client.delete({
+            where: { id }
+        })
+
+        return true
+    }
+
     async update(client: UpdateClientInput, id: number): Promise<UpdateClientOutput> {
         const result = await prisma.client.update({
             where: { id },
@@ -19,6 +30,8 @@ export class ClientRepository implements
         })
 
         result.password = ""
+
+        await KafkaSendMessage.execute('update-client', { external_id: result.id, name: result.name, phone: result.phone })
 
         return result
     }
