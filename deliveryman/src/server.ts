@@ -8,6 +8,7 @@ import Status from './services/Status';
 import Deliveryman from './services/Deliveryman';
 import './kafka/consumer'
 import Ride from './services/Ride';
+import KafkaSendMessage from './kafka/KafkaSendMessage';
 
 const port = normalizePort(process.env.PORT || "3004");
 
@@ -55,7 +56,7 @@ app.io.on("connection", async (socket) => {
         const result = await Ride.acceptRide(id, decoded.id)
         console.log(result);
 
-        //call kafka update-order-status
+        if (result) await KafkaSendMessage.execute("update-order-status", { ...result, status: 'accepted' })
     })
 
     socket.on("deny_order", async (id: number) => {
@@ -73,7 +74,7 @@ app.io.on("connection", async (socket) => {
         console.log(result);
         await Status.free(decoded.id)
 
-        //call kafka update-order-status
+        if (result) await KafkaSendMessage.execute("update-order-status", { ...result, status: 'finished' })
     })
 
 })
