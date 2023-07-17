@@ -34,12 +34,13 @@ class Ride {
     async acceptRide(id: number, deliveryman_id: number): Promise<IRide | false> {
         try {
             const result = await prisma.ride.update({
-                where: { id },
+                where: { external_id: id },
                 data: { deliveryman_id }
             })
 
             return result
         } catch (error) {
+            console.log(error);
             return false
         }
     }

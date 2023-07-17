@@ -18,16 +18,21 @@ export async function updateOrderStatusConsumer() {
                 status: 'accepted' | 'finished'
             }
 
-            await prisma.order.update({
+            console.log(messageObject);
+            const result = await prisma.order.update({
                 where: {
                     id: messageObject.external_id
                 },
                 data: {
                     deliveryman_id: messageObject.deliveryman_id,
-                    order_status_id: messageObject.status == 'accepted' ? 3 : 4
+                    order_status_id: messageObject.status == 'accepted' ? 3 : 4,
+                    finished_at: messageObject.status == 'finished' ? new Date() : null
                 }
             })
+            console.log(result);
 
         }
     })
 }
+
+updateOrderStatusConsumer()
