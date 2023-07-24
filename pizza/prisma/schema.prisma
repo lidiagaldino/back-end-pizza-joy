@@ -61,6 +61,7 @@ model PizzaSize {
 
 model Size {
   id         Int         @id @default(autoincrement())
+  price      Float
   name       String      @unique @db.VarChar(50)
   pizza_size PizzaSize[]
 

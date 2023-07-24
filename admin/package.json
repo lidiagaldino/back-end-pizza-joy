@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx ts-node ./src/main/server.ts"
+    "migrate": "npx prisma migrate dev",
+    "generate": "npx prisma generate",
+    "dev": "npm run generate && npm run migrate && ts-node-dev --poll ./src/main/server.ts",
+    "build": "rimraf ./bin && tsc",
+    "start": "npm run build && node bin/main/server.js"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +31,7 @@
     "@types/express": "^4.17.17",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^20.2.5",
-    "prisma": "^4.16.0"
+    "prisma": "^4.16.0",
+    "rimraf": "^5.0.1"
   }
 }

@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx ts-node ./src/main/server.ts",
-    "s": "cls && npm i && npx prisma validate && npx prisma migrate &&npx ts-node-dev src/server.ts",
-    "create": "cls && npx prisma migrate dev",
-    "mac": "clear && npm i && npx prisma validate && npx prisma migrate &&npx ts-node-dev  src/server.ts"
+    "build": "npx tsc",
+    "start": "node ./bin/server.js"
   },
   "keywords": [],
   "author": "",
