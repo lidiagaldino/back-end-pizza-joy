@@ -1,6 +1,6 @@
 import { PizzaProps } from "../../../domain/entities/pizza.entity";
-import { SizeProps } from "../../../domain/entities/size.entity";
+import { FindPizzaOutput } from "../../model/pizza-size.model";
 
 export interface FindPizzaBySizeRepository {
-    findBySize(size_id: number): Promise<PizzaProps[]>
+    findBySize(size_id: number): Promise<FindPizzaOutput>
 }

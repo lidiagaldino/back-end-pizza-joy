@@ -3,8 +3,9 @@ export type HttpResponse<T = any> = {
     data: T
 }
 
-export type HttpRequest<TParams = any, TUser = any, TBody = any> = {
+export type HttpRequest<TParams = any, TUser = any, TBody = any, TQuery = any> = {
     params: TParams,
     user: TUser,
-    body: TBody
+    body: TBody,
+    query: TQuery
 }
