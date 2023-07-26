@@ -1,2 +1,0 @@
-import './clientConsumer'
-import './orderConsumer'

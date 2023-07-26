@@ -10,7 +10,7 @@ export class GetAllPizzasController implements Controller {
             const result = await this.getAllPizzas.index()
             return { data: result, statusCode: 200 }
         } catch (error) {
-            if (error.message.contais('NOT_FOUND')) {
+            if (error.message.includes('NOT_FOUND')) {
                 return { data: { error: error.message }, statusCode: 404 }
             }
             return { data: error.message, statusCode: 500 }

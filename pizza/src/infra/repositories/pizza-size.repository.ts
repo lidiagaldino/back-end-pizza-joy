@@ -1,16 +1,32 @@
-import { CreateInput } from "../../application/model/pizza-size.model";
+import { CreateInput, FindPizzaSizeInput } from "../../application/model/pizza-size.model";
 import { CreatePizzaSizeRepository } from "../../application/repositories/pizza-size/create-pizza-size.repository";
 import { DeletePizzaSizeRepository } from "../../application/repositories/pizza-size/delete-pizza-ingredient.repository";
 import { FindPizzaBySizeRepository } from "../../application/repositories/pizza-size/find-pizza-by-size.repository";
+import { FindPizzasSizeRepository } from "../../application/repositories/pizza-size/find-pizzas-size.repository";
 import { CreatePizzaSizeInput, CreatePizzaSizeOutput } from "../../domain/usecases/pizza-size/create-pizza-size.usecase";
 import { DeletePizzaSizeInput } from "../../domain/usecases/pizza-size/delete-pizza-size.usecase";
 import { FindPizzaBySizeOutput } from "../../domain/usecases/pizza-size/find-pizza-by-size.usecase";
+import { FindPizzasSizeOutput } from "../../domain/usecases/pizza-size/find-pizzas-size.usecase";
 import prisma from "../db/prisma";
 
 export class PizzaSizeRepository implements
     DeletePizzaSizeRepository,
     CreatePizzaSizeRepository,
-    FindPizzaBySizeRepository {
+    FindPizzaBySizeRepository,
+    FindPizzasSizeRepository {
+
+    async findPizzasSize(data: FindPizzaSizeInput): Promise<FindPizzasSizeOutput> {
+        const result = await prisma.pizzaSize.findMany({
+            where: data,
+            include: { pizza: true }
+        })
+
+        if (result.length > 0) {
+            return { id: result[0].id, name: result[0].pizza.name, photo: result[0].pizza.photo, price: result[0].price, size_id: result[0].size_id }
+        }
+
+        throw new Error('NOT_FOUND')
+    }
 
     async findBySize(size_id: number): Promise<FindPizzaBySizeOutput> {
         const result = await prisma.pizzaSize.findMany({

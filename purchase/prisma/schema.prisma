@@ -32,7 +32,6 @@ model Order {
   created_at        DateTime       @default(now())
   finished_at       DateTime?
   intent_payment_id String         @unique
-  client            Client         @relation(fields: [client_id], references: [external_id], onDelete: Cascade)
   ProductOrder      ProductOrder[]
   client_id         Int
   payment           Payment?
@@ -43,16 +42,6 @@ model Order {
   location_id       Int
 
   @@map("tbl_order")
-}
-
-model Client {
-  id          Int     @id @default(autoincrement())
-  external_id Int     @unique
-  name        String
-  phone       String
-  Order       Order[]
-
-  @@map("tbl_client")
 }
 
 model Payment {

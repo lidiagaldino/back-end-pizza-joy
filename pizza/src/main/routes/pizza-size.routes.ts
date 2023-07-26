@@ -6,11 +6,13 @@ import { makeCreatePizzaSizeController } from '../factories/pizza-size/create-pi
 import { pizzaSizeBodyValidation } from '../../infra/yup/schemas/pizza-size.schema';
 import { makeDeletePizzaSizeController } from '../factories/pizza-size/delete-pizza-size.controller.factory';
 import { makeFindPizzaBySizeController } from '../factories/pizza-size/find-pizza-by-size.controller.factory';
+import { makeFindPizzaSizeController } from '../factories/pizza-size/find-pizza-size.controller.factory';
 
 const routes = Router()
 
 routes.post('/', auth, isAdmin, adaptRoute(makeCreatePizzaSizeController(pizzaSizeBodyValidation)))
 routes.delete('/', auth, isAdmin, adaptRoute(makeDeletePizzaSizeController(pizzaSizeBodyValidation)))
 routes.get('/:id', adaptRoute(makeFindPizzaBySizeController()))
+routes.get('/:pizza_id/:size_id', adaptRoute(makeFindPizzaSizeController()))
 
 export default routes
